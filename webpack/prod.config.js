@@ -1,6 +1,8 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 const baseConfig = require('./base.config.js');
 
 module.exports = merge(baseConfig, {
@@ -22,9 +24,7 @@ module.exports = merge(baseConfig, {
     },
 
     plugins: [
+        new CleanWebpackPlugin(),
         new ExtractTextPlugin({filename: 'style.[chunkhash:8].css'}),
-        new HtmlWebpackPlugin({
-            template: './src/index.html'
-        })
     ]
 });
