@@ -20,11 +20,9 @@ const CardList = React.memo(({ cards }) => {
     return <div className='cardList'>
         {
             Object.values(cards).map(
-                ({ id, title, text }) => <PreviewCard key={id}
+                ({ id, ...card }) => <PreviewCard key={id}
                     liked={likes.includes(id)}
-                    cardId={id}
-                    title={title}
-                    text={text}
+                    card={{ id, ...card }}
                 />
             )
         }
