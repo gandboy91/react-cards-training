@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(baseConfig, {
     devtool: 'eval-source-map',
+    output: {
+        publicPath: '/'
+    },
     module: {
         rules: [
             {
@@ -19,6 +22,7 @@ module.exports = merge(baseConfig, {
     devServer: {
         inline: true,
         contentBase: 'src',
+        historyApiFallback: true,
         port: '3030',
     },
 
