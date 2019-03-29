@@ -5,13 +5,12 @@ import { faEdit, faHeart as pressedLike } from '@fortawesome/free-solid-svg-icon
 import { faHeart as unpressedLike } from '@fortawesome/free-regular-svg-icons'
 import {LikesContext} from "../context/likes";
 import PropTypes from "prop-types";
-import Card from "./Card";
 
 /**
  * Card preview. Shows card info, allows to like card
  * Uses likes context
  */
-export default React.memo(({ card: {id, title, text}, liked }) => {
+const PreviewCard = React.memo(({ card: {id, title, text}, liked }) => {
     const { toggleLike } = useContext(LikesContext)
     const handleLike = useCallback(() => toggleLike(id), [id])
 
@@ -35,7 +34,9 @@ export default React.memo(({ card: {id, title, text}, liked }) => {
     </div>
 })
 
-Card.propTypes = {
+PreviewCard.propTypes = {
     card: PropTypes.object.isRequired,
     liked: PropTypes.bool.isRequired
 }
+
+export default PreviewCard

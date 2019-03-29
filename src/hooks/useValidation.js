@@ -15,7 +15,6 @@ export default function useValidation(fieldValidators) {
         const invalid = []
         try {
             for (const field in fieldValidators) {
-                console.log(fields[field]);
                 !fieldValidators[field].validate(fields[field]) && invalid.push(field)
             }
         } catch (e) {
