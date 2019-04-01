@@ -18,14 +18,12 @@ module.exports = merge(baseConfig, {
             }
         ]
     },
-
     devServer: {
         inline: true,
         contentBase: 'src',
         historyApiFallback: true,
         port: '3030',
     },
-
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html'
