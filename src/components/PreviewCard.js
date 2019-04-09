@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
  * Card preview. Shows card info, allows to like card
  * Uses likes context
  */
-const PreviewCard = React.memo(({ card: {id, title, text}, liked }) => {
+const PreviewCard = ({ card: {id, title, text}, liked }) => {
     const { toggleLike } = useContext(LikesContext)
     const handleLike = useCallback(() => toggleLike(id), [id])
 
@@ -32,11 +32,11 @@ const PreviewCard = React.memo(({ card: {id, title, text}, liked }) => {
             </div>
         </div>
     </div>
-})
+}
 
 PreviewCard.propTypes = {
     card: PropTypes.object.isRequired,
     liked: PropTypes.bool.isRequired
 }
 
-export default PreviewCard
+export default React.memo(PreviewCard)

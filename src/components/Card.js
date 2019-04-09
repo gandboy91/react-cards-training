@@ -19,7 +19,7 @@ import Validator from "../validators/Validator"
  * Uses card hook and validation hook. Receives as a prop validators object with specific validator for each field
  * when complete redirects to main page
  */
-const Card = React.memo(({ card: {id, ...card}, change, remove, fieldsValidators }) => {
+const Card = ({ card: {id, ...card}, change, remove, fieldsValidators }) => {
 
     const { title, text, complete, setComplete, changeTextHandler, changeTitleHandler } = useCard(card)
     const { invalidFields, validate } = useValidation(fieldsValidators)
@@ -65,7 +65,7 @@ const Card = React.memo(({ card: {id, ...card}, change, remove, fieldsValidators
                 </div>
             </div>
         </div>
-})
+}
 
 Card.defaultProps = {
     fieldsValidators: {
@@ -85,4 +85,4 @@ Card.propTypes = {
     fieldsValidators: PropTypes.objectOf(PropTypes.instanceOf(Validator))
 }
 
-export default Card
+export default React.memo(Card)

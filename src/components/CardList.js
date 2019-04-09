@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import PropTypes from 'prop-types'
 import PreviewCard from "./PreviewCard"
 import { Link } from 'react-router-dom'
-import {LikesContext} from "../context/likes";
+import {LikesContext} from "../context/likes"
 import '../styles/cards.css'
 import '../styles/buttons.css'
 
@@ -15,8 +15,8 @@ const AddButton = props => <Link className='addButton previewCard shadow' to={'/
  * List of card previews and adding new card button. Uses likes context
  * @type {{compare, $$typeof, type}}
  */
-const CardList = React.memo(({ cards }) => {
-    const { likes } = useContext(LikesContext);
+const CardList = ({ cards }) => {
+    const { likes } = useContext(LikesContext)
     return <div className='cardList'>
         {
             Object.values(cards).map(
@@ -28,7 +28,7 @@ const CardList = React.memo(({ cards }) => {
         }
         <AddButton />
     </div>
-})
+}
 
 CardList.propTypes = {
     cards: PropTypes.PropTypes.objectOf(
@@ -40,4 +40,4 @@ CardList.propTypes = {
     )
 }
 
-export default CardList;
+export default React.memo(CardList)

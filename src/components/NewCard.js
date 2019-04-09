@@ -20,7 +20,7 @@ import {InputWithAlerts, TextareaWithAlerts} from "./forms/inputs"
  * Uses card hook and validation hook. Receives as a prop validators object with specific validator for each field
  * when complete redirects to main page
  */
-const NewCard = React.memo(({ save, fieldsValidators }) => {
+const NewCard = ({ save, fieldsValidators }) => {
 
     const { title, text, complete, setComplete, changeTextHandler, changeTitleHandler } = useCard()
     const { invalidFields, validate } = useValidation(fieldsValidators)
@@ -59,7 +59,7 @@ const NewCard = React.memo(({ save, fieldsValidators }) => {
                 </div>
             </div>
         </div>
-})
+}
 
 NewCard.defaultProps = {
     fieldsValidators: {
@@ -73,4 +73,4 @@ NewCard.propTypes = {
     fieldsValidators: PropTypes.objectOf(PropTypes.instanceOf(Validator))
 }
 
-export default NewCard
+export default React.memo(NewCard)
