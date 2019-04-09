@@ -1,12 +1,19 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
-import {MAX_TITLE_LENGTH, MAX_TEXT_LENGTH, validateTitle, validateText} from "../constants/validation"
+import {
+    MAX_TITLE_LENGTH,
+    MAX_TEXT_LENGTH,
+    validateTitle,
+    validateText,
+    TITLE_ERROR_MESSAGE,
+    TEXT_ERROR_MESSAGE
+} from "../constants/validation"
 import useCard from "../hooks/useCard"
 import useValidation from "../hooks/useValidation"
 import Validator from "../validators/Validator"
 import Title from "./Title"
-import {SimpleInput, SimpleTextarea} from "./forms/inputs"
+import {InputWithAlerts, TextareaWithAlerts} from "./forms/inputs"
 
 /**
  * New Card component. Allows to edit card information and save card. Takes save callback
@@ -18,7 +25,7 @@ const NewCard = React.memo(({ save, fieldsValidators }) => {
     const { title, text, complete, setComplete, changeTextHandler, changeTitleHandler } = useCard()
     const { invalidFields, validate } = useValidation(fieldsValidators)
 
-    const isValid = useCallback(field => !invalidFields.includes(field), [invalidFields])
+    const getError = useCallback(field => invalidFields[field] || '', [invalidFields])
     const saveHandler = useCallback(() => {
        if (validate({ title, text })) {
            save({ title, text })
@@ -32,19 +39,19 @@ const NewCard = React.memo(({ save, fieldsValidators }) => {
             <Title>New Card</Title>
             <div className='card newCard shadow'>
                 <div className="card-header">
-                    <SimpleInput value={title}
+                    <InputWithAlerts value={title}
                         placeholder='Enter title'
                         maxLength={MAX_TITLE_LENGTH}
                         onChange={changeTitleHandler}
-                        className={isValid('title') ? '' : 'is-invalid'}
+                        error={getError('title')}
                     />
                 </div>
                 <div className="card-body">
-                    <SimpleTextarea value={text}
+                    <TextareaWithAlerts value={text}
                         placeholder='Enter text'
                         maxLength={MAX_TEXT_LENGTH}
                         onChange={changeTextHandler}
-                        className={isValid('text') ? '' : 'is-invalid'}
+                        error={getError('text')}
                     />
                     <button type="button" className="btn btn-lg btn-secondary mt-3 btn-block" onClick={saveHandler}>
                         Save
@@ -56,8 +63,8 @@ const NewCard = React.memo(({ save, fieldsValidators }) => {
 
 NewCard.defaultProps = {
     fieldsValidators: {
-        'title': new Validator(validateTitle),
-        'text': new Validator(validateText)
+        'title': new Validator(validateTitle, TITLE_ERROR_MESSAGE),
+        'text': new Validator(validateText, TEXT_ERROR_MESSAGE)
     }
 }
 

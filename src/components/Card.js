@@ -4,8 +4,14 @@ import {Redirect} from "react-router-dom"
 import useCard from "../hooks/useCard"
 import useValidation from "../hooks/useValidation"
 import Title from "./Title"
-import {SimpleInput, SimpleTextarea} from "./forms/inputs"
-import {MAX_TEXT_LENGTH, MAX_TITLE_LENGTH, validateText, validateTitle} from "../constants/validation"
+import {InputWithAlerts, TextareaWithAlerts} from "./forms/inputs"
+import {
+    MAX_TEXT_LENGTH,
+    MAX_TITLE_LENGTH, TEXT_ERROR_MESSAGE,
+    TITLE_ERROR_MESSAGE,
+    validateText,
+    validateTitle
+} from "../constants/validation"
 import Validator from "../validators/Validator"
 
 /**
@@ -18,7 +24,7 @@ const Card = React.memo(({ card: {id, ...card}, change, remove, fieldsValidators
     const { title, text, complete, setComplete, changeTextHandler, changeTitleHandler } = useCard(card)
     const { invalidFields, validate } = useValidation(fieldsValidators)
 
-    const isValid = useCallback(field => !invalidFields.includes(field), [invalidFields])
+    const getError = useCallback(field => invalidFields[field] || '', [invalidFields])
     const removeHandler = useCallback(() => {
         setComplete(true)
         remove(id)
@@ -36,17 +42,17 @@ const Card = React.memo(({ card: {id, ...card}, change, remove, fieldsValidators
             <Title>Edit Card</Title>
             <div className='card newCard shadow'>
                 <div className="card-header">
-                    <SimpleInput value={title}
+                    <InputWithAlerts value={title}
                         maxLength={MAX_TITLE_LENGTH}
                         onChange={changeTitleHandler}
-                        className={isValid('title') ? '' : 'is-invalid'}
+                        error={getError('title')}
                     />
                 </div>
                 <div className="card-body">
-                    <SimpleTextarea value={text}
+                    <TextareaWithAlerts value={text}
                         maxLength={MAX_TEXT_LENGTH}
                         onChange={changeTextHandler}
-                        className={isValid('text') ? '' : 'is-invalid'}
+                        error={getError('text')}
                     />
                     <div className="btn-group btn-group-lg btn-block">
                         <button type="button" className="btn btn-secondary mt-3" onClick={saveHandler}>
@@ -63,8 +69,8 @@ const Card = React.memo(({ card: {id, ...card}, change, remove, fieldsValidators
 
 Card.defaultProps = {
     fieldsValidators: {
-        'title': new Validator(validateTitle),
-        'text': new Validator(validateText)
+        'title': new Validator(validateTitle, TITLE_ERROR_MESSAGE),
+        'text': new Validator(validateText, TEXT_ERROR_MESSAGE)
     }
 }
 
