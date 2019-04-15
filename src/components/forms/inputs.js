@@ -1,5 +1,4 @@
 import React from 'react'
-import '../../styles/inputs.css'
 
 /**
  * HOC for inputs to show notifications
